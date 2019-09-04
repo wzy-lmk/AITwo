@@ -66,16 +66,14 @@
             
             $.ajax({
                 type: "post",
-                url: "url",
+                url: "/AI/loginservlet",
                 data: {"username":username,"password":password},
                 dataType: "json",
                 success: function (response) {
                     alert("success")
                 }
             });
-
         }
-    
     </script>
 </body>
 </html>
