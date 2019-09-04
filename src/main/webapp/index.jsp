@@ -4,7 +4,6 @@
 <form action="s" method="get">
 	<input type="text" name="name"><br>
 	<input type="submit" value="tijiao">
-	
 </form>
 </body>
 </html>
