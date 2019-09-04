@@ -11,5 +11,6 @@ public class ser extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         System.out.println(name);
+        System.out.println("a");
     }
 }
