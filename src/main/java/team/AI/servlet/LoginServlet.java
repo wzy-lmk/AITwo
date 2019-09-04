@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
             map.put("1","账号或者密码不能为空");
         }
         String json = gson.toJson(map);
-        System.out.println(json.toString());
+        response.getWriter().println(json);
+        System.out.println("end");
     }
 }
