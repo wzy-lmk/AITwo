@@ -1,6 +1,6 @@
 package team.AI.bean;
 
-public class LoginBean {
+public class UserBean {
     private int id;
     private String name;
     private String email;

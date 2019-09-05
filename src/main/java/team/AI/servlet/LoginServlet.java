@@ -1,9 +1,8 @@
 package team.AI.servlet;
 
 import com.google.gson.Gson;
-import team.AI.DaoIMP.LoginIMP;
-import team.AI.bean.LoginBean;
-import team.AI.serviceIMP.LoginServiceIMP;
+import team.AI.bean.UserBean;
+import team.AI.serviceIMP.UserServiceIMP;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +14,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+    用户登陆
+*/
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,17 +24,17 @@ public class LoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=utf-8");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        LoginBean loginBean=new LoginBean();
-        loginBean.setPhone(username);
-        loginBean.setEmail(username);
-        loginBean.setPassword(password);
+        UserBean userBean =new UserBean();
+        userBean.setPhone(username);
+        userBean.setEmail(username);
+        userBean.setPassword(password);
 
 
         Gson gson=new Gson();
         Map<String, String> map=new HashMap<String, String>();
         if(!username.equals("")&&!password.equals("")){
-            LoginServiceIMP loginServiceIMP=new LoginServiceIMP();
-            LoginBean bean = loginServiceIMP.login(loginBean);
+            UserServiceIMP loginServiceIMP=new UserServiceIMP();
+            UserBean bean = loginServiceIMP.login(userBean);
             if(bean!=null){
                 HttpSession session = request.getSession();
                 session.setAttribute("userinfo",bean);
