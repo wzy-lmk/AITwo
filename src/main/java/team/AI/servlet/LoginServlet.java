@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/loginservlet")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         LoginBean loginBean=new LoginBean();
