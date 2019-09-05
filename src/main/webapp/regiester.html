@@ -82,14 +82,14 @@
 							</div>
 							
 							<div class="button-login">
-								<button type="submit" class="btn btn-primary">注册</button>
+								<button type="submit" class="btn btn-primary" onclick="return check()">注册</button>
 							</div>
 							<div class="clearfix"></div>
 					</form>
 					<hr>
 					<h3>已有账号？</h3>
 					<p>
-						<a href="#">点击此处</a>用账号登录.
+						<a href="/login.html">点击此处</a>用账号登录.
 					</p>	
 				</div><!--/span-->
 			</div><!--/row-->
@@ -163,6 +163,19 @@
 
 		<script src="js/custom.js"></script>
 	<!-- end: JavaScript-->
+
+		<script>
+			function check(){
+				var obj = $("#tel").val(); //要验证的对象
+				if(obj == ""){ //输入不能为空
+					alert("输入不能为空!");
+					return false;
+				}else if(!(/^1[3456789]\d{9}$/.test(obj.toString()))){ //正则验证不通过，格式不对
+					alert("手机号格式错误");
+					return false;
+				}
+			}
+		</script>
 	
 </body>
 </html>
