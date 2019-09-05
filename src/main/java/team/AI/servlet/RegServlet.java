@@ -45,6 +45,7 @@ public class RegServlet extends HttpServlet {
                 System.out.println("注册成功");
             } else {
                 System.out.println("注册失败");
+                jsonBean.setFail2("服务器繁忙，请稍后再试");
             }
         } else {
             jsonBean.setFail1("手机号或者邮箱已经存在");

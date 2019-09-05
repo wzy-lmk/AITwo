@@ -54,11 +54,11 @@
 			<div class="row-fluid">
 				<div class="login-box">
 					<div class="icons">
-						<a href="index.html"><i class="halflings-icon home"></i></a>
-						<a href="#"><i class="halflings-icon cog"></i></a>
+						<a href="login.html"><i class="halflings-icon home"></i></a>
+						<!--<a href="#"><i class="halflings-icon cog"></i></a>-->
 					</div>
 					<h2>注册一个新账号</h2>
-					<form class="form-horizontal" action="RegServlet" method="post">
+					<form class="form-horizontal" id="regeister-from">
 						<fieldset>
 							
 							<div class="input-prepend" title="Username">
@@ -86,7 +86,7 @@
 
 							
 							<div class="button-login">
-								<button type="submit" class="btn btn-primary" onclick="return check()">注册</button>
+								<button type="button" class="btn btn-primary" onclick="return check()">注册</button>
 							</div>
 							<div class="clearfix"></div>
 							</fieldset>
@@ -94,7 +94,7 @@
 					<hr>
 					<h3>已有账号？</h3>
 					<p>
-						<a href="/login.html">点击此处</a>用账号登录.
+						<a href="/AI_war_exploded/login.html">点击此处</a>用账号登录.
 					</p>	
 				</div><!--/span-->
 			</div><!--/row-->
@@ -170,6 +170,28 @@
 	<!-- end: JavaScript-->
 
 		<script>
+
+			function regeister() {
+
+				$.ajax({
+					type: "post",
+					url: "RegServlet",
+					data: $('#regeister-from').serialize(),
+					dataType: "json",
+					success: function (data) {
+
+						if (data.fail1!=null){
+							alert("手机号或者邮箱已经存在")
+						}else if (data.fail2!=null) {
+							alert("服务器繁忙，请稍后再试")
+						}else {
+							alert("注册成功,请登录")
+							window.location="http://localhost:8080/AI_war_exploded/login.html";
+						}
+					}
+				});
+			}
+
 			function check(){
 				var obj = $("#tel").val(); //要验证的对象
 				if(obj == ""){ //输入不能为空
@@ -179,6 +201,8 @@
 					alert("手机号格式错误");
 					return false;
 				}
+
+				regeister()
 			}
 		</script>
 

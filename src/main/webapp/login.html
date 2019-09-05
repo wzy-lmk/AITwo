@@ -42,12 +42,12 @@
 			<div class="row-fluid">
 				<div class="login-box">
 					<div class="icons">
-						<a href="index.html"><i class="halflings-icon home"></i></a>
-						<a href="#"><i class="halflings-icon cog"></i></a>
+						<a href="regiester.html"><i class="icon-user home"></i></a>
+						<!--<a href="#"><i class="halflings-icon cog"></i></a>-->
 					</div>
 					<h2>登录你的账户</h2>
 
-					<form class="form-horizontal" action="LoginServlet" method="post">
+					<form id="login-form" class="form-horizontal">
 						<fieldset>
 							
 							<div class="input-prepend" title="Username">
@@ -59,13 +59,14 @@
 							<div class="input-prepend" title="Password">
 								<span class="add-on"><i class="halflings-icon lock"></i></span>
 								<input class="input-large span10" name="password" id="password" type="password" placeholder="密码"/>
+								<span id="forget-pwd"></span>
 							</div>
 							<div class="clearfix"></div>
-							
+
 							<label class="remember" for="remember"><input type="checkbox" id="remember" />记住密码</label>
 
-							<div class="button-login">	
-								<button type="submit" class="btn btn-primary">登录</button>
+							<div class="button-login">
+								<button type="button" onclick="login()" class="btn btn-primary">登录</button>
 							</div>
 							<div class="clearfix"></div>
 						</fieldset>
@@ -73,7 +74,7 @@
 					<hr>
 					<h3>忘记密码?</h3>
 					<p>
-						没关系, <a href="#">点击这里</a> 获取新的密码.
+						没关系, <a href="#" id="forgetlink" onclick="forgetPassword()">点击这里</a> 使用验证码登录.
 					</p>	
 				</div><!--/span-->
 			</div><!--/row-->
@@ -146,5 +147,62 @@
 		<script src="js/retina.js"></script>
 
 		<script src="js/custom.js"></script>
+		<script>
+
+
+			function login() {
+
+				$.ajax({
+					type: "post",
+					url: "LoginServlet",
+					data: $('#login-form').serialize(),
+					dataType: "json",
+					success: function (data) {
+						console.log(data)
+						// var res = $.parseJSON(data)
+						if (data.fail2!=null){
+							alert("账号或者密码错误")
+						}else if (data.fail1!=null) {
+							alert("账号或者密码不能为空")
+						}else {
+							window.location="http://localhost:8080/AI_war_exploded/index.html";
+						}
+					}
+				});
+			}
+
+
+			function forgetPassword() {
+				$('#username').attr("placeholder","请输入注册手机号码")
+				$('#password').attr("placeholder","请输入验证码")
+				$('#password').width(215);
+				$('#forget-pwd').append("<span style=\"padding-left:10px\"></span><button id='codebutton' type=\"button\" class=\"btn btn-primary\" style=\"height: 30px;\" onclick='sendCode()'>发送验证码</button>")
+				$('#forgetlink').attr("onclick","javascript:;")
+
+			}
+			
+			function sendCode() {
+				var phone =$('#username').val()
+				$('#codebutton').text="已发送"
+				if(phone == ""){ //输入不能为空
+					alert("手机号不能为空")
+					return false;
+				}else if(!(/^1[3456789]\d{9}$/.test(phone))){ //正则验证不通过，格式不对
+					alert("手机号格式错误");
+					return false;
+				}
+
+				$.ajax({
+					type: "post",
+					url: "url",
+					data: {"tel":phone,"date":new Date()},
+					dataType: "dataType",
+					success: function (response) {
+
+					}
+				});
+
+			}
+		</script>
 </body>
 </html>
