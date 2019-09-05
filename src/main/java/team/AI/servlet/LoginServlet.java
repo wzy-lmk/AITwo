@@ -1,6 +1,8 @@
 package team.AI.servlet;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import team.AI.bean.JsonBean;
 import team.AI.bean.UserBean;
 import team.AI.serviceIMP.UserServiceIMP;
 
@@ -31,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 
 
         Gson gson=new Gson();
-        Map<String, String> map=new HashMap<String, String>();
+        JsonBean jsonBean=new JsonBean();
         if(!username.equals("")&&!password.equals("")){
             UserServiceIMP loginServiceIMP=new UserServiceIMP();
             UserBean bean = loginServiceIMP.login(userBean);
@@ -39,13 +41,15 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("userinfo",bean);
             }else{
-                map.put("2","账号或者密码错误");
+                jsonBean.setFail2("账号或者密码错误");
             }
         }else{
-            map.put("1","账号或者密码不能为空");
+            jsonBean.setFail1("账号密码不能为空");
+
         }
-        String json = gson.toJson(map);
+        String json = gson.toJson(jsonBean);
         response.getWriter().println(json);
+        System.out.println(json);
         System.out.println("end");
     }
 }

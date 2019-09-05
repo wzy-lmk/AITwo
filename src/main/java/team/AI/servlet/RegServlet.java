@@ -2,6 +2,7 @@ package team.AI.servlet;
 
 import com.google.gson.Gson;
 import org.omg.CORBA.PRIVATE_MEMBER;
+import team.AI.bean.JsonBean;
 import team.AI.bean.UserBean;
 import team.AI.service.UserService;
 import team.AI.serviceIMP.UserServiceIMP;
@@ -37,6 +38,7 @@ public class RegServlet extends HttpServlet {
         UserServiceIMP userServiceIMP = new UserServiceIMP();
         Boolean isExistPhoneAndEmail = userServiceIMP.isExistPhoneAndEmail(userBean);
 
+        JsonBean jsonBean=new JsonBean();
         if (isExistPhoneAndEmail) {
             Boolean reg = userServiceIMP.reg(userBean);
             if (reg) {
@@ -45,11 +47,10 @@ public class RegServlet extends HttpServlet {
                 System.out.println("注册失败");
             }
         } else {
-            map.put("1", "手机号或者邮箱已经存在");
+            jsonBean.setFail1("手机号或者邮箱已经存在");
         }
-
         Gson gson=new Gson();
-        String json = gson.toJson(map);
+        String json = gson.toJson(jsonBean);
         response.getWriter().println(json);
     }
 
