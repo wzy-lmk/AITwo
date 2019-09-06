@@ -17,4 +17,13 @@ public interface UserService {
         判断手机号和邮箱是否存在
     */
     public abstract Boolean isExistPhoneAndEmail(UserBean userBean);
+
+    /*
+        以邮箱查找用户的姓名
+    */
+    public abstract UserBean emailFindPhone(UserBean userBean);
+    /*
+        通过邮箱修改用户的密码
+    */
+    public abstract int emailToUpdatePWD(UserBean userBean);
 }

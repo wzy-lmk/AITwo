@@ -16,7 +16,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class SMS {
+public class Email {
 
     // 发送邮件的账号
     private static String ownEmailAccount = "1583214829@qq.com";
@@ -28,11 +28,14 @@ public class SMS {
     private static String receiveMailAccount = null;
 
     public static String SendEmail(String email) {
+        String newPWD=genRandomNum();
         receiveMailAccount=email;
         UserBean userBean=new UserBean();
         userBean.setEmail(email);
+        userBean.setPassword(newPWD);
         UserServiceIMP userServiceIMP=new UserServiceIMP();
         String name = userServiceIMP.emailFindPhone(userBean).getName();
+        userServiceIMP.emailToUpdatePWD(userBean);
         Properties prop = new Properties();
         // 设置邮件传输采用的协议smtp
         prop.setProperty("mail.transport.protocol", "smtp");
@@ -58,7 +61,7 @@ public class SMS {
         session.setDebug(true);
         // 创建邮件对象
         try {
-            Message message = createSimpleMail(session,name);
+            Message message = createSimpleMail(session,name,newPWD);
             Transport trans = session.getTransport();
             // 链接邮件服务器
             trans.connect(ownEmailAccount, ownEmailPassword);
@@ -82,7 +85,7 @@ public class SMS {
      * @Description: 创建邮件对象
      * @author: chengpeng
      */
-    public static Message createSimpleMail(Session session,String name) throws Exception {
+    public static Message createSimpleMail(Session session,String name,String newPWD) throws Exception {
 
         MimeMessage message = new MimeMessage(session);
         // 设置发送邮件地址,param1 代表发送地址 param2 代表发送的名称(任意的) param3 代表名称编码方式
@@ -98,7 +101,7 @@ public class SMS {
         // 设置邮件主题
         message.setSubject("新密码");
         // 设置邮件内容
-        message.setContent("尊敬的用户，你的新密码是："+genRandomNum(), "text/html;charset=utf-8");
+        message.setContent("尊敬的用户，你的新密码是："+newPWD, "text/html;charset=utf-8");
         // 设置发送时间
         message.setSentDate(new Date());
         // 保存上面的编辑内容

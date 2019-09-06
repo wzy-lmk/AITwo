@@ -1,15 +1,14 @@
 package team.AI.DaoIMP;
 
+import com.alibaba.druid.sql.visitor.functions.Substring;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
 import team.AI.Dao.UserDao;
 import team.AI.bean.UserBean;
 import team.AI.utils.DBUtiles;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class UserIMP implements UserDao {
     /*
@@ -17,10 +16,10 @@ public class UserIMP implements UserDao {
     */
     public UserBean login(UserBean userBean) {
         QueryRunner runner = new QueryRunner(DBUtiles.getDataSource());
-        String sql = sql = "select * from user where (email='" + userBean.getEmail() + "' and password='" + userBean.getPassword() + "') or (phone='" + userBean.getPhone() + "' and password='" + userBean.getPassword() + "')";
+        String sql = "select * from user where (email='" + userBean.getEmail() + "' and password='" + userBean.getPassword() + "') or (phone='" + userBean.getPhone() + "' and password='" + userBean.getPassword() + "')";
         try {
             UserBean bean = runner.query(sql, new BeanHandler<UserBean>(UserBean.class));
-            if (bean!=null) {
+            if (bean != null) {
                 return bean;
             }
         } catch (Exception e) {
@@ -67,13 +66,50 @@ public class UserIMP implements UserDao {
         return false;
     }
 
+    /*
+        以邮箱查找用户的姓名
+    */
+    public UserBean emailFindPhone(UserBean userBean) {
+        QueryRunner runner = new QueryRunner(DBUtiles.getDataSource());
+        String sql = "select * from user where email='" + userBean.getEmail() + "'";
+        try {
+            UserBean bean = runner.query(sql, new BeanHandler<UserBean>(UserBean.class));
+            if (bean != null) {
+                return bean;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+        通过邮箱修改用户的密码
+    */
+    public int emailToUpdatePWD(UserBean userBean) {
+        QueryRunner runner = new QueryRunner(DBUtiles.getDataSource());
+        Object object[]={userBean.getPassword(),userBean.getEmail()};
+        String sql = "update user set password=? where email=? ";
+        try {
+            int update = runner.update(sql, object);
+            if(update!=0){
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
         UserBean userBean = new UserBean();
         //userBean.setPhone("");
         //userBean.setEmail("");
         //userBean.setPhone("17856002909");
-        userBean.setEmail("319732708@qq.com");
         userBean.setPassword("123456");
+        userBean.setEmail("319732708@qq.com");
+
+        //       userBean.setPassword("123456");
 //        userBean.setName("李梦可");
 //        userBean.setEmail("1583214829@qq.com");
 //        userBean.setPhone("17856002383");
@@ -82,8 +118,7 @@ public class UserIMP implements UserDao {
         UserIMP loginIMP = new UserIMP();
 //        loginIMP.reg(userBean);
 
-        UserBean bean = loginIMP.login(userBean);
-        System.out.println(bean);
-        System.out.println("end");
+        int pwd = loginIMP.emailToUpdatePWD(userBean);
+
     }
 }
