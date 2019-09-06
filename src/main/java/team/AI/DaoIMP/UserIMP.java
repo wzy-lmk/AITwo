@@ -2,6 +2,7 @@ package team.AI.DaoIMP;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.ArrayHandler;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import team.AI.Dao.UserDao;
 import team.AI.bean.UserBean;
@@ -16,15 +17,13 @@ public class UserIMP implements UserDao {
     */
     public UserBean login(UserBean userBean) {
         QueryRunner runner = new QueryRunner(DBUtiles.getDataSource());
-        String sql = "select * from user where (phone='" + userBean.getPhone() + "' and password='" + userBean.getPassword() + "') or (email='" + userBean.getEmail() + " 'and password='" + userBean.getPassword() + "') ";
-        //or email="+loginBean.getEmail()+" and password="+loginBean.getPassword()+"
+        String sql = sql = "select * from user where (email='" + userBean.getEmail() + "' and password='" + userBean.getPassword() + "') or (phone='" + userBean.getPhone() + "' and password='" + userBean.getPassword() + "')";
         try {
-            List<UserBean> list = runner.query(sql, new BeanListHandler<UserBean>(UserBean.class));
-            if (!list.isEmpty()) {
-                return list.get(0);
+            UserBean bean = runner.query(sql, new BeanHandler<UserBean>(UserBean.class));
+            if (bean!=null) {
+                return bean;
             }
-
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -54,12 +53,12 @@ public class UserIMP implements UserDao {
     /*
         判断手机号和邮箱是否存在
     */
-    public Boolean isExistPhoneAndEmail(UserBean userBean){
+    public Boolean isExistPhoneAndEmail(UserBean userBean) {
         QueryRunner runner = new QueryRunner(DBUtiles.getDataSource());
-        String sql="select * from user where phone='"+userBean.getPhone()+"' or email='"+userBean.getEmail()+"'";
+        String sql = "select * from user where phone='" + userBean.getPhone() + "' or email='" + userBean.getEmail() + "'";
         try {
             Object[] objects = runner.query(sql, new ArrayHandler());
-            if(objects.length==0){
+            if (objects.length == 0) {
                 return true;
             }
         } catch (SQLException e) {
@@ -70,18 +69,21 @@ public class UserIMP implements UserDao {
 
     public static void main(String[] args) {
         UserBean userBean = new UserBean();
-//        userBean.setPhone("17856002909");
-//        userBean.setEmail("319732708@qq.com");
-//        userBean.setPassword("123456");
-        userBean.setName("李梦可");
-        userBean.setEmail("1583214829@qq.com");
-        userBean.setPhone("17856002383");
+        //userBean.setPhone("");
+        //userBean.setEmail("");
+        //userBean.setPhone("17856002909");
+        userBean.setEmail("319732708@qq.com");
         userBean.setPassword("123456");
-
+//        userBean.setName("李梦可");
+//        userBean.setEmail("1583214829@qq.com");
+//        userBean.setPhone("17856002383");
+//        userBean.setPassword("123456");
+//
         UserIMP loginIMP = new UserIMP();
-        loginIMP.reg(userBean);
+//        loginIMP.reg(userBean);
 
-        //UserBean bean = loginIMP.login(userBean);
-        //System.out.println(bean);
+        UserBean bean = loginIMP.login(userBean);
+        System.out.println(bean);
+        System.out.println("end");
     }
 }
