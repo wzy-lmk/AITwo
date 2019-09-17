@@ -69,10 +69,13 @@ public class Email {
             trans.sendMessage(message, message.getAllRecipients());
             // 关闭链接
             trans.close();
+
+            return "success";
         } catch (Exception e) {
             e.printStackTrace();
+            return "fail";
         }
-        return "success";
+
     }
 
     /**

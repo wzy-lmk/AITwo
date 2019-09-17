@@ -36,14 +36,14 @@
                                     <p class="text-muted mb-4">输入您的电子邮件地址，我们会向您发送一封电子邮件，其中包含重置密码的说明。</p>
                                 </div>
 
-                                <form action="#">
+                                <form action="#" id="mail-form">
                                     <div class="form-group mb-3">
                                         <label for="emailaddress">邮箱地址</label>
-                                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                                        <input class="form-control" name="email" type="email" id="emailaddress" required="" placeholder="Enter your email">
                                     </div>
 
                                     <div class="form-group mb-0 text-center">
-                                        <button class="btn btn-primary" type="submit">重置密码</button>
+                                        <button class="btn btn-primary" type="button" onclick="sendmail()">重置密码</button>
                                     </div>
                                 </form>
                             </div> <!-- end card-body-->
@@ -71,5 +71,23 @@
 
         <!-- App js -->
         <script src="assets/js/app.min.js"></script>
+        <script>
+            function sendmail() {
+                $.ajax({
+                    type: "post",
+                    url: "EmailServlet",
+                    data: $('#mail-form').serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data)
+                        // var res = $.parseJSON(data)
+                        if (data.toString()=="fail"){
+                            alert("服务器繁忙，请稍后再试")
+                        }
+                        window.location="http://localhost:8080/AI_war_exploded/confirm-mail.html";
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
