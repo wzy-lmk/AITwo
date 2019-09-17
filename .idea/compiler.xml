@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AI" />
+        <module name="HtmlUnit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="AI" target="1.7" />
+      <module name="HtmlUnit" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

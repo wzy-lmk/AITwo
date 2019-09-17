@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AI.iml" filepath="$PROJECT_DIR$/AI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AIRep/HtmlUnit.iml" filepath="$PROJECT_DIR$/AIRep/HtmlUnit.iml" />
     </modules>
   </component>
 </project>
